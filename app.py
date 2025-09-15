@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-# Mock data with ensured 'metrics' key for all restaurants
+# Mock data with corrected 'sales_data' for 'embers'
 restaurants = {
     'rise': {
         'name': 'Rise - Ready to Serve',
@@ -64,9 +64,9 @@ restaurants = {
         ],
         'sales_data': [
             {'item_id': 'embers_chicken_biryani', 'quantity': 80, 'revenue': 640},
-            {'item_id': 'embers_tea', 'quantity': 60, 'revenue': 180},
-            {'id': 'embers_veg_biryani', 'quantity': 30, 'revenue': 240},
-            {'id': 'embers_dal_rice', 'quantity': 20, 'revenue': 100},
+            {'item_id': 'embers_veg_biryani', 'quantity': 60, 'revenue': 480},  # Replaced Tea with Veg Biryani
+            {'id': 'embers_dal_rice', 'quantity': 30, 'revenue': 150},
+            {'id': 'embers_samosa', 'quantity': 20, 'revenue': 100},
         ],
         'ratings': [
             {'item_id': 'embers_tea', 'rating': 4.3, 'comment': 'Perfect balance of spices.', 'timestamp': '2023-01-14'},
