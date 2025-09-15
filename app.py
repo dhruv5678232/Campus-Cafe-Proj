@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-# Mock data with updated ratings and new items for 'embers'
+# Mock data with updated 'embers' section
 restaurants = {
     'rise': {
         'name': 'Rise - Ready to Serve',
@@ -53,14 +53,6 @@ restaurants = {
         'name': 'Embers - Ready to Serve',
         'theme_gradient': 'linear-gradient(135deg, #1e3c72, #2a5298)',
         'inventory': [
-            {'id': 'embers_tea', 'name': 'Tea [Medium]', 'stock': 45, 'max_stock': 50, 'category': 'drink', 'available': True},
-            {'id': 'embers_chicken_biryani', 'name': 'Chicken Biryani', 'stock': 20, 'max_stock': 25, 'category': 'meal', 'available': True},
-            {'id': 'embers_coffee', 'name': 'Coffee', 'stock': 15, 'max_stock': 20, 'category': 'drink', 'available': True},
-            {'id': 'embers_veg_biryani', 'name': 'Veg Biryani', 'stock': 18, 'max_stock': 20, 'category': 'meal', 'available': True},
-            {'id': 'embers_dal_rice', 'name': 'Dal Rice', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
-            {'id': 'embers_naan', 'name': 'Garlic Naan', 'stock': 12, 'max_stock': 20, 'category': 'snack', 'available': True},
-            {'id': 'embers_gulab_jamun', 'name': 'Gulab Jamun', 'stock': 8, 'max_stock': 15, 'category': 'dessert', 'available': True},
-            {'id': 'embers_samosa', 'name': 'Vegetable Samosa', 'stock': 25, 'max_stock': 30, 'category': 'snack', 'available': True},
             {'id': 'embers_chicken_lollipop', 'name': 'Chicken Lollipop', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True},
             {'id': 'embers_chilli_paneer', 'name': 'Chilli Paneer', 'stock': 12, 'max_stock': 15, 'category': 'meal', 'available': True},
             {'id': 'embers_paneer_tikka_masala', 'name': 'Paneer Tikka Masala', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
@@ -69,20 +61,18 @@ restaurants = {
             {'id': 'embers_fish_curry', 'name': 'Fish Curry', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
         ],
         'sales_data': [
-            {'item_id': 'embers_chicken_biryani', 'quantity': 80, 'revenue': 640},
-            {'item_id': 'embers_veg_biryani', 'quantity': 60, 'revenue': 480},
-            {'id': 'embers_dal_rice', 'quantity': 30, 'revenue': 150},
-            {'id': 'embers_samosa', 'quantity': 20, 'revenue': 100},
-            {'id': 'embers_chicken_lollipop', 'quantity': 25, 'revenue': 200},
-            {'id': 'embers_chilli_paneer', 'quantity': 15, 'revenue': 120},
+            {'item_id': 'embers_chicken_lollipop', 'quantity': 30, 'revenue': 240},
+            {'item_id': 'embers_chilli_paneer', 'quantity': 20, 'revenue': 160},
+            {'id': 'embers_paneer_tikka_masala', 'quantity': 15, 'revenue': 120},
+            {'id': 'embers_veg_manchurian', 'quantity': 10, 'revenue': 80},
         ],
         'ratings': [
-            {'item_id': 'embers_chicken_biryani', 'rating': 4.7, 'comment': 'Excellent taste and portion.', 'timestamp': '2023-01-14'},
-            {'item_id': 'embers_coffee', 'rating': 3.9, 'comment': 'Needs more cream.', 'timestamp': '2023-01-14'},
-            {'item_id': 'embers_veg_biryani', 'rating': 4.2, 'comment': 'Great for vegetarians.', 'timestamp': '2023-01-14'},
-            {'item_id': 'embers_samosa', 'rating': 4.0, 'comment': 'Crisp but slightly oily.', 'timestamp': '2023-01-14'},
-            {'item_id': 'embers_chicken_lollipop', 'rating': 4.5, 'comment': 'Spicy and delicious!', 'timestamp': '2023-01-15'},
-            {'item_id': 'embers_chilli_paneer', 'rating': 4.3, 'comment': 'Perfect spice level.', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_chicken_lollipop', 'rating': 4.5, 'comment': 'Spicy and delicious', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_chilli_paneer', 'rating': 4.3, 'comment': 'Perfect spice level', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_paneer_tikka_masala', 'rating': 4.4, 'comment': 'Rich and creamy', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_veg_manchurian', 'rating': 4.1, 'comment': 'Great texture', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_achari_paneer_tikka', 'rating': 4.2, 'comment': 'Unique tangy flavor', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_fish_curry', 'rating': 4.3, 'comment': 'Well-spiced and fresh', 'timestamp': '2023-01-15'},
         ],
         'suggestions': [
             {'item_name': 'Butter Chicken', 'description': 'Rich creamy chicken curry', 'status': 'pending', 'timestamp': '2023-01-15'},
@@ -94,10 +84,10 @@ restaurants = {
             'gross_cost': 25.500,
             'gross_profit': 3.250,
             'net_profit': 2.300,
-            'items_sold': 150,
-            'low_stock_items': 2
+            'items_sold': 75,
+            'low_stock_items': 1
         },
-        'weekly_revenue': [5000, 5100, 5200, 5150, 5050, 4900, 4600]
+        'weekly_revenue': [3500, 3600, 3700, 3650, 3550, 3400, 3200]
     }
 }
 
@@ -148,18 +138,18 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# Header Metrics with fallback
+# Header Metrics with updated currency format
 current_restaurant = restaurants.get(st.session_state.active_restaurant, {})
 metrics = current_restaurant.get('metrics', {'today_sales': 0, 'gross_cost': 0, 'gross_profit': 0, 'net_profit': 0, 'items_sold': 0, 'low_stock_items': 0})
 st.title(current_restaurant.get('name', 'Restaurant Dashboard'))
 col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Today's Sales", f"₹{metrics['today_sales']:,}", f"₹{24.825 if st.session_state.active_restaurant == 'rise' else 28.750:,} before expenses")
-col2.metric("Gross Cost", f"₹{metrics['gross_cost']:,}", f"₹{22.150 if st.session_state.active_restaurant == 'rise' else 25.500:,}")
-col3.metric("Gross Profit", f"₹{metrics['gross_profit']:,}", f"₹{2.675 if st.session_state.active_restaurant == 'rise' else 3.250:,}")
-col4.metric("Net Profit", f"₹{metrics['net_profit']:,}", f"₹{1.890 if st.session_state.active_restaurant == 'rise' else 2.300:,}")
-col5.metric("Items Sold", f"{metrics['items_sold']:,}", f"+{127 if st.session_state.active_restaurant == 'rise' else 150} today")
+col1.metric("Today's Sales", f"₹{int(metrics['today_sales'] * 1000):,}", f"₹{24,825 if st.session_state.active_restaurant == 'rise' else 28,750} before expenses")
+col2.metric("Gross Cost", f"₹{int(metrics['gross_cost'] * 1000):,}", f"₹{22,150 if st.session_state.active_restaurant == 'rise' else 25,500}")
+col3.metric("Gross Profit", f"₹{int(metrics['gross_profit'] * 1000):,}", f"₹{2,675 if st.session_state.active_restaurant == 'rise' else 3,250}")
+col4.metric("Net Profit", f"₹{int(metrics['net_profit'] * 1000):,}", f"₹{1,890 if st.session_state.active_restaurant == 'rise' else 2,300}")
+col5.metric("Items Sold", f"{metrics['items_sold']:,}", f"+{127 if st.session_state.active_restaurant == 'rise' else 75} today")
 col6, col7 = st.columns([3, 2])
-col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}", f"{3 if st.session_state.active_restaurant == 'rise' else 2} new")
+col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}", f"{3 if st.session_state.active_restaurant == 'rise' else 1} new")
 
 # Main Content
 if st.session_state.active_view == 'admin':
