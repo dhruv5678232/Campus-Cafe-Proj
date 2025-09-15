@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-# Mock data with corrected 'sales_data' for 'embers'
+# Mock data with updated ratings and new items for 'embers'
 restaurants = {
     'rise': {
         'name': 'Rise - Ready to Serve',
@@ -61,19 +61,28 @@ restaurants = {
             {'id': 'embers_naan', 'name': 'Garlic Naan', 'stock': 12, 'max_stock': 20, 'category': 'snack', 'available': True},
             {'id': 'embers_gulab_jamun', 'name': 'Gulab Jamun', 'stock': 8, 'max_stock': 15, 'category': 'dessert', 'available': True},
             {'id': 'embers_samosa', 'name': 'Vegetable Samosa', 'stock': 25, 'max_stock': 30, 'category': 'snack', 'available': True},
+            {'id': 'embers_chicken_lollipop', 'name': 'Chicken Lollipop', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True},
+            {'id': 'embers_chilli_paneer', 'name': 'Chilli Paneer', 'stock': 12, 'max_stock': 15, 'category': 'meal', 'available': True},
+            {'id': 'embers_paneer_tikka_masala', 'name': 'Paneer Tikka Masala', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
+            {'id': 'embers_veg_manchurian', 'name': 'Veg Manchurian', 'stock': 8, 'max_stock': 12, 'category': 'meal', 'available': True},
+            {'id': 'embers_achari_paneer_tikka', 'name': 'Achari Paneer Tikka', 'stock': 5, 'max_stock': 10, 'category': 'snack', 'available': True},
+            {'id': 'embers_fish_curry', 'name': 'Fish Curry', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
         ],
         'sales_data': [
             {'item_id': 'embers_chicken_biryani', 'quantity': 80, 'revenue': 640},
-            {'item_id': 'embers_veg_biryani', 'quantity': 60, 'revenue': 480},  # Replaced Tea with Veg Biryani
+            {'item_id': 'embers_veg_biryani', 'quantity': 60, 'revenue': 480},
             {'id': 'embers_dal_rice', 'quantity': 30, 'revenue': 150},
             {'id': 'embers_samosa', 'quantity': 20, 'revenue': 100},
+            {'id': 'embers_chicken_lollipop', 'quantity': 25, 'revenue': 200},
+            {'id': 'embers_chilli_paneer', 'quantity': 15, 'revenue': 120},
         ],
         'ratings': [
-            {'item_id': 'embers_tea', 'rating': 4.3, 'comment': 'Perfect balance of spices.', 'timestamp': '2023-01-14'},
             {'item_id': 'embers_chicken_biryani', 'rating': 4.7, 'comment': 'Excellent taste and portion.', 'timestamp': '2023-01-14'},
             {'item_id': 'embers_coffee', 'rating': 3.9, 'comment': 'Needs more cream.', 'timestamp': '2023-01-14'},
             {'item_id': 'embers_veg_biryani', 'rating': 4.2, 'comment': 'Great for vegetarians.', 'timestamp': '2023-01-14'},
             {'item_id': 'embers_samosa', 'rating': 4.0, 'comment': 'Crisp but slightly oily.', 'timestamp': '2023-01-14'},
+            {'item_id': 'embers_chicken_lollipop', 'rating': 4.5, 'comment': 'Spicy and delicious!', 'timestamp': '2023-01-15'},
+            {'item_id': 'embers_chilli_paneer', 'rating': 4.3, 'comment': 'Perfect spice level.', 'timestamp': '2023-01-15'},
         ],
         'suggestions': [
             {'item_name': 'Butter Chicken', 'description': 'Rich creamy chicken curry', 'status': 'pending', 'timestamp': '2023-01-15'},
