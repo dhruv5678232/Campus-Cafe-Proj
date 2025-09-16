@@ -60,7 +60,7 @@ restaurants = {
             'items_sold': 127,
             'low_stock_items': 3
         },
-        'weekly_revenue': [4500, 5100,5700, 5250, 5550, 6400, 4850]
+        'weekly_revenue': [4500, 4600, 4700, 4650, 4550, 4400, 4000]
     },
     'embers': {
         'name': 'Embers - Ready to Serve',
@@ -153,13 +153,13 @@ current_restaurant = restaurants.get(st.session_state.active_restaurant, {})
 metrics = current_restaurant.get('metrics', {'today_sales': 0, 'gross_cost': 0, 'gross_profit': 0, 'net_profit': 0, 'items_sold': 0, 'low_stock_items': 0})
 st.title(current_restaurant.get('name', 'Restaurant Dashboard'))
 col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Today's Sales", f"₹{int(metrics['today_sales'] * 1000):,}", f"₹{24,825 if st.session_state.active_restaurant == 'rise' else 28,750} before expenses")
-col2.metric("Gross Cost", f"₹{int(metrics['gross_cost'] * 1000):,}", f"₹{22,150 if st.session_state.active_restaurant == 'rise' else 25,500}")
-col3.metric("Gross Profit", f"₹{int(metrics['gross_profit'] * 1000):,}", f"₹{2,675 if st.session_state.active_restaurant == 'rise' else 3,250}")
-col4.metric("Net Profit", f"₹{int(metrics['net_profit'] * 1000):,}", f"₹{1,890 if st.session_state.active_restaurant == 'rise' else 2,300}")
-col5.metric("Items Sold", f"{metrics['items_sold']:,}", f"+{127 if st.session_state.active_restaurant == 'rise' else 75} today")
+col1.metric("Today's Sales", f"₹{int(metrics['today_sales'] * 1000):,}")
+col2.metric("Gross Cost", f"₹{int(metrics['gross_cost'] * 1000):,}")
+col3.metric("Gross Profit", f"₹{int(metrics['gross_profit'] * 1000):,}")
+col4.metric("Net Profit", f"₹{int(metrics['net_profit'] * 1000):,}")
+col5.metric("Items Sold", f"{metrics['items_sold']:,}")
 col6, col7 = st.columns([3, 2])
-col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}", f"{3 if st.session_state.active_restaurant == 'rise' else 1} new")
+col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}")
 
 # Main Content
 if st.session_state.active_view == 'admin':
@@ -173,8 +173,7 @@ if st.session_state.active_view == 'admin':
             df_inv_original = df_inv[~df_inv['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
             df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
             for _, row in df_inv_original.iterrows():
-                color = 'normal' if row['stock_pct'] > 30 else 'inverse'
-                st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}", delta=f"{row['stock_pct']}%", delta_color=color)
+                st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}")
                 st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
                 st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
         else:
@@ -208,7 +207,7 @@ if st.session_state.active_view == 'admin':
                     with cols[idx % num_cols]:
                         with st.container():
                             st.write(f"**{row['name']}**")
-                            st.metric("Stock", f"{row['stock']}/{row['max_stock']}", f"{(row['stock'] / row['max_stock'] * 100):.1f}%")
+                            st.metric("Stock", f"{row['stock']}/{row['max_stock']}")
                             st.caption(f"Category: {row['category']}")
                             st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
@@ -219,7 +218,7 @@ if st.session_state.active_view == 'admin':
         df_ratings = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('ratings', []))
         if not df_ratings.empty:
             for _, row in df_ratings.iterrows():
-                st.metric(label=row['name'] if 'name' in row else row['item_id'], value=f"{row['rating']} ⭐", delta=f"{len(df_ratings[df_ratings['item_id'] == row['item_id']])} reviews")
+                st.metric(label=row['name'] if 'name' in row else row['item_id'], value=f"{row['rating']} ⭐")
                 st.write(row['comment'])
                 st.caption(f"Reviewed on: {row['timestamp']}")
         else:
@@ -262,6 +261,8 @@ elif st.session_state.active_view == 'student':
             df_top = df_top.sort_values('rating', ascending=False).head(10)
             fig = px.bar(df_top, x='name', y='rating', title='Top Rated Items',
                          color='comment', hover_data=['comment'])
+            # Set custom y-axis ticks for 0.25, 0.5, 0.75, 1, etc. up to 5
+            fig.update_layout(yaxis=dict(tickmode='array', tickvals=[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5], ticktext=['0.25', '0.5', '0.75', '1', '1.25', '1.5', '1.75', '2', '2.25', '2.5', '2.75', '3', '3.25', '3.5', '3.75', '4', '4.25', '4.5', '4.75', '5']))
             st.plotly_chart(fig, use_container_width=True)
             st.dataframe(df_top, use_container_width=True)
         else:
@@ -315,6 +316,3 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
-
-
-
