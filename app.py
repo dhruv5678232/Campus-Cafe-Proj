@@ -60,7 +60,7 @@ restaurants = {
             'items_sold': 127,
             'low_stock_items': 3
         },
-        'weekly_revenue': [4500, 5100,5700, 5250, 5550, 6400, 4000]
+        'weekly_revenue': [4500, 5100,5700, 5250, 5550, 6400]
     },
     'embers': {
         'name': 'Embers - Ready to Serve',
@@ -315,4 +315,5 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
+
 
