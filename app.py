@@ -172,7 +172,7 @@ if st.session_state.active_view == 'admin':
         if not df_sales.empty and not df_inv_data.empty:
             df_sales = df_sales.merge(df_inv_data[['id', 'name']], left_on='item_id', right_on='id', how='left')
             df_sales = df_sales[['name', 'quantity', 'revenue']].head(4)
-            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 4 Selling Items',
+            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 2 Selling Items',
                              color='revenue', color_continuous_scale='Viridis')
             st.plotly_chart(fig_bar, use_container_width=True)
             
@@ -286,3 +286,4 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
+
