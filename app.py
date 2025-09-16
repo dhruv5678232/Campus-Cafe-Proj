@@ -169,8 +169,10 @@ if st.session_state.active_view == 'admin':
         st.subheader("Inventory Overview")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         if not df_inv.empty:
-            df_inv['stock_pct'] = (df_inv['stock'] / df_inv['max_stock'] * 100).round(1)
-            for _, row in df_inv.iterrows():
+            # Filter out new items (those with IDs containing sandwich, pizza, burger, etc.)
+            df_inv_original = df_inv[~df_inv['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
+            df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
+            for _, row in df_inv_original.iterrows():
                 color = 'normal' if row['stock_pct'] > 30 else 'inverse'
                 st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}", delta=f"{row['stock_pct']}%", delta_color=color)
                 st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
