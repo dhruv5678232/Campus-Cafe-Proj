@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-# Mock data with updated 'embers' section
+# Mock data with updated 'rise' inventory
 restaurants = {
     'rise': {
         'name': 'Rise - Ready to Serve',
@@ -20,6 +20,19 @@ restaurants = {
             {'id': 'rise_korean_cheese', 'name': 'Korean Cream Cheese Bun', 'stock': 1, 'max_stock': 15, 'category': 'pastry', 'available': True},
             {'id': 'rise_hashbrown', 'name': 'Hashbrown Omelette', 'stock': 12, 'max_stock': 20, 'category': 'meal', 'available': True},
             {'id': 'rise_omlette', 'name': 'Omelette', 'stock': 25, 'max_stock': 30, 'category': 'meal', 'available': True},
+            {'id': 'rise_chicken_sandwich', 'name': 'Chicken Sandwich', 'stock': 20, 'max_stock': 25, 'category': 'sandwich', 'available': True},
+            {'id': 'rise_paneer_sandwich', 'name': 'Paneer Sandwich', 'stock': 18, 'max_stock': 20, 'category': 'sandwich', 'available': True},
+            {'id': 'rise_spicy_chicken_pizza', 'name': 'Spicy Chicken Pizza', 'stock': 15, 'max_stock': 20, 'category': 'pizza', 'available': True},
+            {'id': 'rise_paneer_pizza', 'name': 'Paneer Pizza', 'stock': 12, 'max_stock': 15, 'category': 'pizza', 'available': True},
+            {'id': 'rise_4_cheese_pizza', 'name': '4 Cheese Pizza', 'stock': 10, 'max_stock': 15, 'category': 'pizza', 'available': True},
+            {'id': 'rise_margerita_pizza', 'name': 'Margerita Pizza', 'stock': 8, 'max_stock': 12, 'category': 'pizza', 'available': True},
+            {'id': 'rise_market_fresh_pizza', 'name': 'Market Fresh Pizza', 'stock': 5, 'max_stock': 10, 'category': 'pizza', 'available': True},
+            {'id': 'rise_veg_burger', 'name': 'Veg Burger', 'stock': 15, 'max_stock': 20, 'category': 'burger', 'available': True},
+            {'id': 'rise_chicken_smash_burger', 'name': 'Chicken Smash Burger', 'stock': 12, 'max_stock': 15, 'category': 'burger', 'available': True},
+            {'id': 'rise_chicken_fingers', 'name': 'Chicken Fingers', 'stock': 10, 'max_stock': 15, 'category': 'snack', 'available': True},
+            {'id': 'rise_crispy_corn', 'name': 'Crispy Corn', 'stock': 8, 'max_stock': 12, 'category': 'snack', 'available': True},
+            {'id': 'rise_french_fries', 'name': 'French Fries', 'stock': 20, 'max_stock': 25, 'category': 'snack', 'available': True},
+            {'id': 'rise_masala_fries', 'name': 'Masala Fries', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True},
         ],
         'sales_data': [
             {'item_id': 'rise_chicken_puff', 'quantity': 75, 'revenue': 375},
@@ -172,7 +185,7 @@ if st.session_state.active_view == 'admin':
         if not df_sales.empty and not df_inv_data.empty:
             df_sales = df_sales.merge(df_inv_data[['id', 'name']], left_on='item_id', right_on='id', how='left')
             df_sales = df_sales[['name', 'quantity', 'revenue']].head(4)
-            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 2 Selling Items',
+            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 4 Selling Items',
                              color='revenue', color_continuous_scale='Viridis')
             st.plotly_chart(fig_bar, use_container_width=True)
             
@@ -286,4 +299,3 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
-
