@@ -16,7 +16,7 @@ restaurants = {
             {'id': 'rise_black_forest', 'name': 'Black Forest Pastry', 'stock': 15, 'max_stock': 25, 'category': 'pastry', 'available': True},
             {'id': 'rise_chocolate_pastry', 'name': 'Chocolate Pastry', 'stock': 10, 'max_stock': 25, 'category': 'pastry', 'available': True},
             {'id': 'rise_red_velvet', 'name': 'Red Velvet Pastry', 'stock': 12, 'max_stock': 20, 'category': 'pastry', 'available': True},
-            {'id': 'rise_samosa', 'name': 'Samosa', 'stock': 20, 'max_stock': 40, 'category': 'pastry', 'available': False},
+            {'id': 'rise_samosa', 'name': 'Samosa Pastry', 'stock': 20, 'max_stock': 40, 'category': 'pastry', 'available': False},
             {'id': 'rise_korean_cheese', 'name': 'Korean Cream Cheese Bun', 'stock': 1, 'max_stock': 15, 'category': 'pastry', 'available': True},
             {'id': 'rise_hashbrown', 'name': 'Hashbrown Omelette', 'stock': 12, 'max_stock': 20, 'category': 'meal', 'available': True},
             {'id': 'rise_omlette', 'name': 'Omelette', 'stock': 25, 'max_stock': 30, 'category': 'meal', 'available': True},
@@ -195,8 +195,18 @@ if st.session_state.active_view == 'admin':
                 fig_line = px.line(x=days, y=weekly_revenue,
                                    title='Weekly Revenue Trend (₹)', markers=True)
                 st.plotly_chart(fig_line, use_container_width=True)
-        else:
-            st.info("No sales data available.")
+            
+            # New grid display for recently added items
+            st.subheader("New Menu Items")
+            new_items = df_inv_data[df_inv_data['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
+            if not new_items.empty:
+                cols = st.columns(4)
+                for idx, (_, row) in enumerate(new_items.iterrows()):
+                    with cols[idx % 4]:
+                        st.metric(label=row['name'], value=f"Stock: {row['stock']}/{row['max_stock']}", delta=f"{(row['stock'] / row['max_stock'] * 100):.1f}%", delta_color='normal')
+                        st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
+            else:
+                st.info("No new items to display.")
     
     with col3:
         st.subheader("Item Ratings & Reviews")
@@ -299,4 +309,3 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
-
