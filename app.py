@@ -196,15 +196,19 @@ if st.session_state.active_view == 'admin':
                                    title='Weekly Revenue Trend (₹)', markers=True)
                 st.plotly_chart(fig_line, use_container_width=True)
             
-            # New grid display for recently added items
+            # New grid display for recently added items with availability toggle
             st.subheader("New Menu Items")
             new_items = df_inv_data[df_inv_data['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
             if not new_items.empty:
-                cols = st.columns(4)
+                num_cols = 3
+                cols = st.columns(num_cols)
                 for idx, (_, row) in enumerate(new_items.iterrows()):
-                    with cols[idx % 4]:
-                        st.metric(label=row['name'], value=f"Stock: {row['stock']}/{row['max_stock']}", delta=f"{(row['stock'] / row['max_stock'] * 100):.1f}%", delta_color='normal')
-                        st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
+                    with cols[idx % num_cols]:
+                        with st.container():
+                            st.write(f"**{row['name']}**")
+                            st.metric("Stock", f"{row['stock']}/{row['max_stock']}", f"{(row['stock'] / row['max_stock'] * 100):.1f}%")
+                            st.caption(f"Category: {row['category']}")
+                            st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
                 st.info("No new items to display.")
     
