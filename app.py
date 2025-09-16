@@ -129,9 +129,6 @@ st.markdown(f"""
     .stMetric>label {{
         color: #4a2c0e;
     }}
-    .stProgress>span {{
-        background-color: #8B4513;
-    }}
     .css-1aumxhk {{
         background-color: #f0e6d2;
     }}
@@ -163,7 +160,6 @@ if st.session_state.active_view == 'admin':
             for _, row in df_inv.iterrows():
                 color = 'normal' if row['stock_pct'] > 30 else 'inverse'
                 st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}", delta=f"{row['stock_pct']}%", delta_color=color)
-                st.progress(row['stock_pct'] / 100)
                 st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
                 st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
         else:
