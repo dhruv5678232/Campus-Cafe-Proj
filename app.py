@@ -8,31 +8,31 @@ restaurants = {
         'name': 'Rise - Ready to Serve',
         'theme_gradient': 'linear-gradient(135deg, #8B4513, #D2691E)',
         'inventory': [
-            {'id': 'rise_tea', 'name': 'Tea [Medium]', 'stock': 47, 'max_stock': 50, 'category': 'drink', 'available': True},
-            {'id': 'rise_chicken_puff', 'name': 'Chicken Puff', 'stock': 18, 'max_stock': 20, 'category': 'pastry', 'available': True},
-            {'id': 'rise_coffee', 'name': 'Coffee', 'stock': 18, 'max_stock': 20, 'category': 'drink', 'available': True},
-            {'id': 'rise_veggie_puff', 'name': 'Veggie Puff', 'stock': 22, 'max_stock': 25, 'category': 'pastry', 'available': True},
-            {'id': 'rise_egg_puff', 'name': 'Egg Puff', 'stock': 8, 'max_stock': 10, 'category': 'pastry', 'available': True},
-            {'id': 'rise_black_forest', 'name': 'Black Forest Pastry', 'stock': 15, 'max_stock': 25, 'category': 'pastry', 'available': True},
-            {'id': 'rise_chocolate_pastry', 'name': 'Chocolate Pastry', 'stock': 10, 'max_stock': 25, 'category': 'pastry', 'available': True},
-            {'id': 'rise_red_velvet', 'name': 'Red Velvet Pastry', 'stock': 12, 'max_stock': 20, 'category': 'pastry', 'available': True},
-            {'id': 'rise_samosa', 'name': 'Samosa Pastry', 'stock': 20, 'max_stock': 40, 'category': 'pastry', 'available': False},
-            {'id': 'rise_korean_cheese', 'name': 'Korean Cream Cheese Bun', 'stock': 1, 'max_stock': 15, 'category': 'pastry', 'available': True},
-            {'id': 'rise_hashbrown', 'name': 'Hashbrown Omelette', 'stock': 12, 'max_stock': 20, 'category': 'meal', 'available': True},
-            {'id': 'rise_omlette', 'name': 'Omelette', 'stock': 25, 'max_stock': 30, 'category': 'meal', 'available': True},
-            {'id': 'rise_chicken_sandwich', 'name': 'Chicken Sandwich', 'stock': 20, 'max_stock': 25, 'category': 'sandwich', 'available': True},
-            {'id': 'rise_paneer_sandwich', 'name': 'Paneer Sandwich', 'stock': 18, 'max_stock': 20, 'category': 'sandwich', 'available': True},
-            {'id': 'rise_spicy_chicken_pizza', 'name': 'Spicy Chicken Pizza', 'stock': 15, 'max_stock': 20, 'category': 'pizza', 'available': True},
-            {'id': 'rise_paneer_pizza', 'name': 'Paneer Pizza', 'stock': 12, 'max_stock': 15, 'category': 'pizza', 'available': True},
-            {'id': 'rise_4_cheese_pizza', 'name': '4 Cheese Pizza', 'stock': 10, 'max_stock': 15, 'category': 'pizza', 'available': True},
-            {'id': 'rise_margerita_pizza', 'name': 'Margerita Pizza', 'stock': 8, 'max_stock': 12, 'category': 'pizza', 'available': True},
-            {'id': 'rise_market_fresh_pizza', 'name': 'Market Fresh Pizza', 'stock': 5, 'max_stock': 10, 'category': 'pizza', 'available': True},
-            {'id': 'rise_veg_burger', 'name': 'Veg Burger', 'stock': 15, 'max_stock': 20, 'category': 'burger', 'available': True},
-            {'id': 'rise_chicken_smash_burger', 'name': 'Chicken Smash Burger', 'stock': 12, 'max_stock': 15, 'category': 'burger', 'available': True},
-            {'id': 'rise_chicken_fingers', 'name': 'Chicken Fingers', 'stock': 10, 'max_stock': 15, 'category': 'snack', 'available': True},
-            {'id': 'rise_crispy_corn', 'name': 'Crispy Corn', 'stock': 8, 'max_stock': 12, 'category': 'snack', 'available': True},
-            {'id': 'rise_french_fries', 'name': 'French Fries', 'stock': 20, 'max_stock': 25, 'category': 'snack', 'available': True},
-            {'id': 'rise_masala_fries', 'name': 'Masala Fries', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True},
+            {'id': 'rise_tea', 'name': 'Tea [Medium]', 'stock': 47, 'max_stock': 50, 'category': 'drink', 'available': True, 'price': '__'},
+            {'id': 'rise_chicken_puff', 'name': 'Chicken Puff', 'stock': 18, 'max_stock': 20, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_coffee', 'name': 'Coffee', 'stock': 18, 'max_stock': 20, 'category': 'drink', 'available': True, 'price': '__'},
+            {'id': 'rise_veggie_puff', 'name': 'Veggie Puff', 'stock': 22, 'max_stock': 25, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_egg_puff', 'name': 'Egg Puff', 'stock': 8, 'max_stock': 10, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_black_forest', 'name': 'Black Forest Pastry', 'stock': 15, 'max_stock': 25, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_chocolate_pastry', 'name': 'Chocolate Pastry', 'stock': 10, 'max_stock': 25, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_red_velvet', 'name': 'Red Velvet Pastry', 'stock': 12, 'max_stock': 20, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_samosa', 'name': 'Samosa Pastry', 'stock': 20, 'max_stock': 40, 'category': 'pastry', 'available': False, 'price': '__'},
+            {'id': 'rise_korean_cheese', 'name': 'Korean Cream Cheese Bun', 'stock': 1, 'max_stock': 15, 'category': 'pastry', 'available': True, 'price': '__'},
+            {'id': 'rise_hashbrown', 'name': 'Hashbrown Omelette', 'stock': 12, 'max_stock': 20, 'category': 'meal', 'available': True, 'price': '__'},
+            {'id': 'rise_omlette', 'name': 'Omelette', 'stock': 25, 'max_stock': 30, 'category': 'meal', 'available': True, 'price': '__'},
+            {'id': 'rise_chicken_sandwich', 'name': 'Chicken Sandwich', 'stock': 20, 'max_stock': 25, 'category': 'sandwich', 'available': True, 'price': '__'},
+            {'id': 'rise_paneer_sandwich', 'name': 'Paneer Sandwich', 'stock': 18, 'max_stock': 20, 'category': 'sandwich', 'available': True, 'price': '__'},
+            {'id': 'rise_spicy_chicken_pizza', 'name': 'Spicy Chicken Pizza', 'stock': 15, 'max_stock': 20, 'category': 'pizza', 'available': True, 'price': '__'},
+            {'id': 'rise_paneer_pizza', 'name': 'Paneer Pizza', 'stock': 12, 'max_stock': 15, 'category': 'pizza', 'available': True, 'price': '__'},
+            {'id': 'rise_4_cheese_pizza', 'name': '4 Cheese Pizza', 'stock': 10, 'max_stock': 15, 'category': 'pizza', 'available': True, 'price': '__'},
+            {'id': 'rise_margerita_pizza', 'name': 'Margerita Pizza', 'stock': 8, 'max_stock': 12, 'category': 'pizza', 'available': True, 'price': '__'},
+            {'id': 'rise_market_fresh_pizza', 'name': 'Market Fresh Pizza', 'stock': 5, 'max_stock': 10, 'category': 'pizza', 'available': True, 'price': '__'},
+            {'id': 'rise_veg_burger', 'name': 'Veg Burger', 'stock': 15, 'max_stock': 20, 'category': 'burger', 'available': True, 'price': '__'},
+            {'id': 'rise_chicken_smash_burger', 'name': 'Chicken Smash Burger', 'stock': 12, 'max_stock': 15, 'category': 'burger', 'available': True, 'price': '__'},
+            {'id': 'rise_chicken_fingers', 'name': 'Chicken Fingers', 'stock': 10, 'max_stock': 15, 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'rise_crispy_corn', 'name': 'Crispy Corn', 'stock': 8, 'max_stock': 12, 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'rise_french_fries', 'name': 'French Fries', 'stock': 20, 'max_stock': 25, 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'rise_masala_fries', 'name': 'Masala Fries', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True, 'price': '__'},
         ],
         'sales_data': [
             {'item_id': 'rise_chicken_puff', 'quantity': 75, 'revenue': 375},
@@ -66,12 +66,12 @@ restaurants = {
         'name': 'Embers - Ready to Serve',
         'theme_gradient': 'linear-gradient(135deg, #1e3c72, #2a5298)',
         'inventory': [
-            {'id': 'embers_chicken_lollipop', 'name': 'Chicken Lollipop', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True},
-            {'id': 'embers_chilli_paneer', 'name': 'Chilli Paneer', 'stock': 12, 'max_stock': 15, 'category': 'meal', 'available': True},
-            {'id': 'embers_paneer_tikka_masala', 'name': 'Paneer Tikka Masala', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
-            {'id': 'embers_veg_manchurian', 'name': 'Veg Manchurian', 'stock': 8, 'max_stock': 12, 'category': 'meal', 'available': True},
-            {'id': 'embers_achari_paneer_tikka', 'name': 'Achari Paneer Tikka', 'stock': 5, 'max_stock': 10, 'category': 'snack', 'available': True},
-            {'id': 'embers_fish_curry', 'name': 'Fish Curry', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True},
+            {'id': 'embers_chicken_lollipop', 'name': 'Chicken Lollipop', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'embers_chilli_paneer', 'name': 'Chilli Paneer', 'stock': 12, 'max_stock': 15, 'category': 'meal', 'available': True, 'price': '__'},
+            {'id': 'embers_paneer_tikka_masala', 'name': 'Paneer Tikka Masala', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True, 'price': '__'},
+            {'id': 'embers_veg_manchurian', 'name': 'Veg Manchurian', 'stock': 8, 'max_stock': 12, 'category': 'meal', 'available': True, 'price': '__'},
+            {'id': 'embers_achari_paneer_tikka', 'name': 'Achari Paneer Tikka', 'stock': 5, 'max_stock': 10, 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'embers_fish_curry', 'name': 'Fish Curry', 'stock': 10, 'max_stock': 15, 'category': 'meal', 'available': True, 'price': '__'},
         ],
         'sales_data': [
             {'item_id': 'embers_chicken_lollipop', 'quantity': 30, 'revenue': 240},
@@ -174,7 +174,7 @@ if st.session_state.active_view == 'admin':
             df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
             for _, row in df_inv_original.iterrows():
                 st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}")
-                st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'}")
+                st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'} | Price: {row['price']}")
                 st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
         else:
             st.warning("No inventory data available.")
@@ -208,7 +208,7 @@ if st.session_state.active_view == 'admin':
                         with st.container():
                             st.write(f"**{row['name']}**")
                             st.metric("Stock", f"{row['stock']}/{row['max_stock']}")
-                            st.caption(f"Category: {row['category']}")
+                            st.caption(f"Category: {row['category']} | Price: {row['price']}")
                             st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
                 st.info("No new items to display.")
@@ -258,7 +258,7 @@ if st.session_state.active_view == 'admin':
 
 elif st.session_state.active_view == 'student':
     # Student Dashboard
-    tab1, tab2, tab3 = st.tabs(["Top Items", "Rate an Item", "Suggest New Item"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Top Items", "Rate an Item", "Suggest New Item", "Order Now"])
     
     with tab1:
         st.subheader("Top Items")
@@ -325,3 +325,58 @@ elif st.session_state.active_view == 'student':
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
                     st.error("Please provide at least an item name and description.")
+    
+    with tab4:
+        st.subheader("Order Now")
+        df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
+        
+        # Drinks
+        st.subheader("Drinks")
+        drinks = df_inv[df_inv['category'] == 'drink'].sort_values('name')
+        for _, row in drinks.iterrows():
+            if st.button(f"Order {row['name']} (Price: {row['price']})", key=f"order_drink_{row['id']}"):
+                if not row['available']:
+                    st.error("Out of stock, please try ordering again later")
+                else:
+                    st.success(f"Order for {row['name']} placed successfully!")
+        
+        # Pastries
+        st.subheader("Pastries")
+        pastries = df_inv[df_inv['category'] == 'pastry'].sort_values('name')
+        for _, row in pastries.iterrows():
+            if st.button(f"Order {row['name']} (Price: {row['price']})", key=f"order_pastry_{row['id']}"):
+                if not row['available']:
+                    st.error("Out of stock, please try ordering again later")
+                else:
+                    st.success(f"Order for {row['name']} placed successfully!")
+        
+        # Samosas and Puffs
+        st.subheader("Samosas and Puffs")
+        samosas_puffs = df_inv[df_inv['category'] == 'pastry'].sort_values('name')
+        for _, row in samosas_puffs.iterrows():
+            if 'samosa' in row['name'].lower() or 'puff' in row['name'].lower():
+                if st.button(f"Order {row['name']} (Price: {row['price']})", key=f"order_samosa_puff_{row['id']}"):
+                    if not row['available']:
+                        st.error("Out of stock, please try ordering again later")
+                    else:
+                        st.success(f"Order for {row['name']} placed successfully!")
+        
+        # Burgers
+        st.subheader("Burgers")
+        burgers = df_inv[df_inv['category'] == 'burger'].sort_values('name')
+        for _, row in burgers.iterrows():
+            if st.button(f"Order {row['name']} (Price: {row['price']})", key=f"order_burger_{row['id']}"):
+                if not row['available']:
+                    st.error("Out of stock, please try ordering again later")
+                else:
+                    st.success(f"Order for {row['name']} placed successfully!")
+        
+        # Pizzas
+        st.subheader("Pizzas")
+        pizzas = df_inv[df_inv['category'] == 'pizza'].sort_values('name')
+        for _, row in pizzas.iterrows():
+            if st.button(f"Order {row['name']} (Price: {row['price']})", key=f"order_pizza_{row['id']}"):
+                if not row['available']:
+                    st.error("Out of stock, please try ordering again later")
+                else:
+                    st.success(f"Order for {row['name']} placed successfully!")
