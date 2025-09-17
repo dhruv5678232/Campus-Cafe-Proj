@@ -163,7 +163,7 @@ col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}")
 
 # Main Content
 if st.session_state.active_view == 'admin':
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([2, 3, 2])
     
     with col1:
         st.subheader("Inventory Overview")
@@ -212,6 +212,14 @@ if st.session_state.active_view == 'admin':
                             st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
                 st.info("No new items to display.")
+    
+    with col3:
+        st.subheader("Stock Levels")
+        df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
+        if not df_inv.empty:
+            fig_stock = px.bar(df_inv, x='name', y='stock', title='Current Stock Levels',
+                               color='category', color_continuous_scale='Viridis')
+            st.plotly_chart(fig_stock, use_container_width=True)
     
     with col3:
         st.subheader("Item Ratings & Reviews")
