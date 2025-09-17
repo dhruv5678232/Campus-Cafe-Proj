@@ -255,12 +255,12 @@ if st.session_state.active_view == 'admin':
                     if row['status'] == 'pending':
                         if st.button("Approve", key=f"approve_{row['item_name']}"):
                             row['status'] = 'approved'
-                            st.experimental_rerun()
+                            st.rerun()
                 with col3:
                     if row['status'] == 'pending':
                         if st.button("Reject", key=f"reject_{row['item_name']}"):
                             row['status'] = 'rejected'
-                            st.experimental_rerun()
+                            st.rerun()
     else:
         st.info("No suggestions available.")
 
@@ -353,7 +353,7 @@ elif st.session_state.active_view == 'student':
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
-                        st.experimental_rerun()
+                        st.rerun()
         
         # Pastries
         st.subheader("Pastries")
@@ -371,7 +371,7 @@ elif st.session_state.active_view == 'student':
                             if row['id'] not in st.session_state.cart:
                                 st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                             st.session_state.cart[row['id']]['quantity'] += 1
-                            st.experimental_rerun()
+                            st.rerun()
         
         # Samosas and Puffs
         st.subheader("Samosas and Puffs")
@@ -389,7 +389,7 @@ elif st.session_state.active_view == 'student':
                             if row['id'] not in st.session_state.cart:
                                 st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                             st.session_state.cart[row['id']]['quantity'] += 1
-                            st.experimental_rerun()
+                            st.rerun()
         
         # Burgers
         st.subheader("Burgers")
@@ -406,7 +406,7 @@ elif st.session_state.active_view == 'student':
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
-                        st.experimental_rerun()
+                        st.rerun()
         
         # Pizzas
         st.subheader("Pizzas")
@@ -423,7 +423,7 @@ elif st.session_state.active_view == 'student':
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
-                        st.experimental_rerun()
+                        st.rerun()
         
         # Cart Summary
         if st.session_state.cart:
