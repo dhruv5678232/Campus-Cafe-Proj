@@ -217,8 +217,9 @@ if st.session_state.active_view == 'admin':
         st.subheader("Stock Levels")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         if not df_inv.empty:
-            fig_stock = px.bar(df_inv, x='name', y='stock', title='Current Stock Levels',
-                               color='category', color_continuous_scale='Viridis')
+            # Group by category and use item name for lines
+            fig_stock = px.line(df_inv, x='category', y='stock', color='name', title='Stock Levels by Category',
+                                markers=True)
             st.plotly_chart(fig_stock, use_container_width=True)
     
     with col3:
