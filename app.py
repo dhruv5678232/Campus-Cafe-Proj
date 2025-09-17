@@ -32,7 +32,7 @@ restaurants = {
             {'id': 'rise_chicken_fingers', 'name': 'Chicken Fingers', 'stock': 10, 'max_stock': 15, 'category': 'snack', 'available': True, 'price': '__'},
             {'id': 'rise_crispy_corn', 'name': 'Crispy Corn', 'stock': 8, 'max_stock': 12, 'category': 'snack', 'available': True, 'price': '__'},
             {'id': 'rise_french_fries', 'name': 'French Fries', 'stock': 20, 'max_stock': 25, 'category': 'snack', 'available': True, 'price': '__'},
-            {'id': 'rise_masala_fries', 'name': 'Masala Fries', 'stock': 15, 'max_stock': '20', 'category': 'snack', 'available': True, 'price': '__'},
+            {'id': 'rise_masala_fries', 'name': 'Masala Fries', 'stock': 15, 'max_stock': 20, 'category': 'snack', 'available': True, 'price': '__'},
         ],
         'sales_data': [
             {'item_id': 'rise_chicken_puff', 'quantity': 75, 'revenue': 375},
@@ -173,9 +173,12 @@ if st.session_state.active_view == 'admin':
         if not df_inv.empty:
             # Filter out new items (those with IDs containing sandwich, pizza, burger, etc.)
             df_inv_original = df_inv[~df_inv['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
+            # Convert stock and max_stock to numeric, coercing errors to NaN
+            df_inv_original['stock'] = pd.to_numeric(df_inv_original['stock'], errors='coerce')
+            df_inv_original['max_stock'] = pd.to_numeric(df_inv_original['max_stock'], errors='coerce')
             df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
             for _, row in df_inv_original.iterrows():
-                st.metric(label=row['name'], value=f"{row['stock']}/{row['max_stock']}")
+                st.metric(label=row['name'], value=f"{int(row['stock'])}/{int(row['max_stock'])}")
                 st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'} | Price: ₹{row['price']}")
                 st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
         else:
@@ -209,7 +212,7 @@ if st.session_state.active_view == 'admin':
                     with cols[idx % num_cols]:
                         with st.container():
                             st.write(f"**{row['name']}**")
-                            st.metric("Stock", f"{row['stock']}/{row['max_stock']}")
+                            st.metric("Stock", f"{int(row['stock'])}/{int(row['max_stock'])}")
                             st.caption(f"Category: {row['category']} | Price: ₹{row['price']}")
                             st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
@@ -219,6 +222,9 @@ if st.session_state.active_view == 'admin':
         st.subheader("Stock Levels")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         if not df_inv.empty:
+            # Convert stock and max_stock to numeric, coercing errors to NaN
+            df_inv['stock'] = pd.to_numeric(df_inv['stock'], errors='coerce')
+            df_inv['max_stock'] = pd.to_numeric(df_inv['max_stock'], errors='coerce')
             # Group by category and use item name for lines
             fig_stock = px.line(df_inv, x='category', y='stock', color='name', title='Stock Levels by Category',
                                 markers=True)
