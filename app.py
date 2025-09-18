@@ -172,18 +172,16 @@ if st.session_state.active_view == 'admin':
         st.subheader("Inventory Overview")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         if not df_inv.empty:
-            # Filter out new items (those with IDs containing sandwich, pizza, burger, etc.)
             df_inv_original = df_inv[~df_inv['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
-            # Convert stock and max_stock to numeric, coercing errors to NaN
             df_inv_original['stock'] = pd.to_numeric(df_inv_original['stock'], errors='coerce')
             df_inv_original['max_stock'] = pd.to_numeric(df_inv_original['max_stock'], errors='coerce')
             df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
             for _, row in df_inv_original.iterrows():
                 col1, col2 = st.columns([4, 1])
                 with col1:
-                    st.metric(label=row['name'], value=f"{int(row['stock'])}/{int(row['max_stock'])}")
-                    st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'} | Price: ₹{row['price']}")
-                    st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
+                    st.metric(label=row['name'], value=f"{int(row['stock'])} / {int(row['max_stock'])}")
+                    st.caption(f"Category: {row['category']} | Availability: {'Yes' if row['available'] else 'No'} | Price: ₹{row['price']}")
+                    st.toggle("Availability Toggle", value=row['available'], key=f"toggle_{row['id']}")
                 with col2:
                     if st.button("+", key=f"stock_add_{row['id']}"):
                         for item in restaurants[st.session_state.active_restaurant]['inventory']:
@@ -191,8 +189,8 @@ if st.session_state.active_view == 'admin':
                                 item['stock'] += 1
                                 st.rerun()
         else:
-            st.warning("No inventory data available.")
-    
+            st.warning("No inventory data is currently available.")
+
     with col2:
         st.subheader("Sales Analytics")
         df_sales = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('sales_data', []))
@@ -200,18 +198,17 @@ if st.session_state.active_view == 'admin':
         if not df_sales.empty and not df_inv_data.empty:
             df_sales = df_sales.merge(df_inv_data[['id', 'name']], left_on='item_id', right_on='id', how='left')
             df_sales = df_sales[['name', 'quantity', 'revenue']].head(4)
-            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 4 Selling Items',
+            fig_bar = px.bar(df_sales, x='name', y='quantity', title='Top 4 Selling Items by Quantity',
                              color='revenue', color_continuous_scale='Viridis')
             st.plotly_chart(fig_bar, use_container_width=True)
             
             weekly_revenue = restaurants.get(st.session_state.active_restaurant, {}).get('weekly_revenue', [])
             if weekly_revenue:
-                days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                fig_line = px.line(x=days, y=weekly_revenue,
-                                   title='Weekly Revenue Trend (₹)', markers=True)
+                days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                fig_line = px.line(x=days, y=weekly_revenue, title='Weekly Revenue Trend (₹)',
+                                   markers=True, labels={'x': 'Day', 'y': 'Revenue (₹)'})
                 st.plotly_chart(fig_line, use_container_width=True)
             
-            # New grid display for recently added items with availability toggle
             st.subheader("New Menu Items")
             new_items = df_inv_data[df_inv_data['id'].str.contains('sandwich|pizza|burger|chicken_fingers|crispy_corn|french_fries|masala_fries')]
             if not new_items.empty:
@@ -221,35 +218,32 @@ if st.session_state.active_view == 'admin':
                     with cols[idx % num_cols]:
                         with st.container():
                             st.write(f"**{row['name']}**")
-                            st.metric("Stock", f"{int(row['stock'])}/{int(row['max_stock'])}")
+                            st.metric("Stock", f"{int(row['stock'])} / {int(row['max_stock'])}")
                             st.caption(f"Category: {row['category']} | Price: ₹{row['price']}")
-                            st.toggle("Availability", value=row['available'], key=f"new_toggle_{row['id']}")
+                            st.toggle("Availability Toggle", value=row['available'], key=f"new_toggle_{row['id']}")
             else:
-                st.info("No new items to display.")
-    
+                st.info("No new menu items are currently available.")
+
     with col3:
         st.subheader("Stock Levels")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         if not df_inv.empty:
-            # Convert stock and max_stock to numeric, coercing errors to NaN
             df_inv['stock'] = pd.to_numeric(df_inv['stock'], errors='coerce')
             df_inv['max_stock'] = pd.to_numeric(df_inv['max_stock'], errors='coerce')
-            # Group by category and use item name for lines
             fig_stock = px.line(df_inv, x='category', y='stock', color='name', title='Stock Levels by Category',
-                                markers=True)
+                                markers=True, labels={'x': 'Category', 'y': 'Stock Quantity'})
             st.plotly_chart(fig_stock, use_container_width=True)
     
-    with col3:
         st.subheader("Item Ratings & Reviews")
         df_ratings = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('ratings', []))
         if not df_ratings.empty:
             for _, row in df_ratings.iterrows():
-                st.metric(label=row['name'] if 'name' in row else row['item_id'], value=f"{row['rating']} ⭐")
-                st.write(row['comment'])
-                st.caption(f"Reviewed on: {row['timestamp']}")
+                st.metric(label=row['name'] if 'name' in row else row['item_id'], value=f"{row['rating']} / 5 ⭐")
+                st.write(f"Review: {row['comment']}")
+                st.caption(f"Date: {row['timestamp']}")
         else:
-            st.warning("No ratings data available.")
-    
+            st.warning("No ratings or reviews are currently available.")
+
     # Suggestions Panel
     st.subheader("Student Suggestions")
     df_sugg = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('suggestions', []))
@@ -259,7 +253,7 @@ if st.session_state.active_view == 'admin':
                 st.write(f"**{row['item_name']}** - {row['description']}")
                 col1, col2, col3 = st.columns([3, 1, 1])
                 with col1:
-                    st.caption(f"Status: {row['status'].capitalize()} | Submitted on: {row['timestamp']}")
+                    st.caption(f"Status: {row['status'].capitalize()} | Submitted: {row['timestamp']}")
                 with col2:
                     if row['status'] == 'pending':
                         if st.button("Approve", key=f"approve_{row['item_name']}"):
@@ -271,7 +265,7 @@ if st.session_state.active_view == 'admin':
                             row['status'] = 'rejected'
                             st.rerun()
     else:
-        st.info("No suggestions available.")
+        st.info("No student suggestions are currently available.")
 
 elif st.session_state.active_view == 'student':
     # Student Dashboard (no stats or title metrics)
@@ -287,13 +281,12 @@ elif st.session_state.active_view == 'student':
             df_top = df_top.sort_values('rating', ascending=False).head(10)
             fig = px.bar(df_top, x='name', y='rating', title='Top Rated Items',
                          color='comment', hover_data=['comment'])
-            # Set custom y-axis ticks for 0.25, 0.5, 0.75, 1, etc. up to 5
             fig.update_layout(yaxis=dict(tickmode='array', tickvals=[0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5], ticktext=['0.25', '0.5', '0.75', '1', '1.25', '1.5', '1.75', '2', '2.25', '2.5', '2.75', '3', '3.25', '3.5', '3.75', '4', '4.25', '4.5', '4.75', '5']))
             st.plotly_chart(fig, use_container_width=True)
             st.dataframe(df_top, use_container_width=True)
         else:
-            st.info("No items available.")
-    
+            st.info("No items are currently available.")
+
     with tab2:
         st.subheader("Rate an Item")
         df_items = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
@@ -303,8 +296,8 @@ elif st.session_state.active_view == 'student':
             item_name = st.selectbox("Select an Item to Rate", item_names)
             selected_item_id = df_items[df_items['name'] == item_name]['id'].iloc[0]
             
-            rating = st.slider("Your Rating", 1, 5, 3, help="1-5 stars")
-            comment = st.text_area("Comments (optional)", placeholder="Tell us about your experience...")
+            rating = st.slider("Your Rating", 1, 5, 3, help="Rate from 1 to 5 stars")
+            comment = st.text_area("Comments (optional)", placeholder="Share your experience...")
             
             if st.button("Submit Rating", type="primary"):
                 new_rating = {'item_id': selected_item_id, 'rating': rating, 'comment': comment, 'timestamp': '2025-09-17'}
@@ -313,8 +306,8 @@ elif st.session_state.active_view == 'student':
                 st.session_state.ratings.append(new_rating)
                 st.success("Thank you for your rating! It has been submitted.")
         else:
-            st.warning("No available items to rate.")
-    
+            st.warning("No available items to rate at this time.")
+
     with tab3:
         st.subheader("Suggest a New Item")
         with st.form("suggestion_form", clear_on_submit=True):
@@ -341,13 +334,12 @@ elif st.session_state.active_view == 'student':
                     st.session_state.suggestions.append(new_suggestion)
                     st.success("Your suggestion has been submitted! We'll review it soon.")
                 else:
-                    st.error("Please provide at least an item name and description.")
-    
+                    st.error("Please provide an item name and description.")
+
     with tab4:
         st.subheader("Order Now")
         df_inv = pd.DataFrame(restaurants.get(st.session_state.active_restaurant, {}).get('inventory', []))
         
-        # Drinks
         st.subheader("Drinks")
         drinks = df_inv[df_inv['category'] == 'drink'].sort_values('name')
         for _, row in drinks.iterrows():
@@ -357,14 +349,13 @@ elif st.session_state.active_view == 'student':
             with col2:
                 if st.button("+", key=f"add_drink_{row['id']}"):
                     if not row['available']:
-                        st.error("Out of stock, please try ordering again later")
+                        st.error("This item is out of stock. Please try again later.")
                     else:
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
                         st.rerun()
         
-        # Pastries
         st.subheader("Pastries")
         pastries = df_inv[df_inv['category'] == 'pastry'].sort_values('name')
         for _, row in pastries.iterrows():
@@ -375,14 +366,13 @@ elif st.session_state.active_view == 'student':
                 with col2:
                     if st.button("+", key=f"add_pastry_{row['id']}"):
                         if not row['available']:
-                            st.error("Out of stock, please try ordering again later")
+                            st.error("This item is out of stock. Please try again later.")
                         else:
                             if row['id'] not in st.session_state.cart:
                                 st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                             st.session_state.cart[row['id']]['quantity'] += 1
                             st.rerun()
         
-        # Samosas and Puffs
         st.subheader("Samosas and Puffs")
         samosas_puffs = df_inv[df_inv['category'] == 'pastry'].sort_values('name')
         for _, row in samosas_puffs.iterrows():
@@ -393,14 +383,13 @@ elif st.session_state.active_view == 'student':
                 with col2:
                     if st.button("+", key=f"add_samosa_puff_{row['id']}"):
                         if not row['available']:
-                            st.error("Out of stock, please try ordering again later")
+                            st.error("This item is out of stock. Please try again later.")
                         else:
                             if row['id'] not in st.session_state.cart:
                                 st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                             st.session_state.cart[row['id']]['quantity'] += 1
                             st.rerun()
         
-        # Burgers
         st.subheader("Burgers")
         burgers = df_inv[df_inv['category'] == 'burger'].sort_values('name')
         for _, row in burgers.iterrows():
@@ -410,14 +399,13 @@ elif st.session_state.active_view == 'student':
             with col2:
                 if st.button("+", key=f"add_burger_{row['id']}"):
                     if not row['available']:
-                        st.error("Out of stock, please try ordering again later")
+                        st.error("This item is out of stock. Please try again later.")
                     else:
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
                         st.rerun()
         
-        # Pizzas
         st.subheader("Pizzas")
         pizzas = df_inv[df_inv['category'] == 'pizza'].sort_values('name')
         for _, row in pizzas.iterrows():
@@ -427,20 +415,19 @@ elif st.session_state.active_view == 'student':
             with col2:
                 if st.button("+", key=f"add_pizza_{row['id']}"):
                     if not row['available']:
-                        st.error("Out of stock, please try ordering again later")
+                        st.error("This item is out of stock. Please try again later.")
                     else:
                         if row['id'] not in st.session_state.cart:
                             st.session_state.cart[row['id']] = {'name': row['name'], 'price': float(row['price']) if row['price'] != '__' else 0.0, 'quantity': 0}
                         st.session_state.cart[row['id']]['quantity'] += 1
                         st.rerun()
         
-        # Cart Summary with Minus Button
         if st.session_state.cart:
             total_items = sum(item['quantity'] for item in st.session_state.cart.values())
             total_price = sum(item['quantity'] * item['price'] for item in st.session_state.cart.values())
             col1, col2 = st.columns([4, 1])
             with col1:
-                st.button(f"Cart: {total_items} Items ₹{total_price:.2f}")
+                st.button(f"Cart: {total_items} Items - ₹{total_price:.2f}")
             with col2:
                 if st.button("-", key="remove_from_cart"):
                     for item_id in list(st.session_state.cart.keys()):
@@ -451,18 +438,15 @@ elif st.session_state.active_view == 'student':
                             st.rerun()
                             break
         
-        # Order Confirmation
         if st.session_state.cart and st.button("Confirm Order", type="primary"):
             for item_id, item in st.session_state.cart.items():
                 if item['quantity'] > 0:
-                    # Update inventory stock
                     for inv_item in restaurants[st.session_state.active_restaurant]['inventory']:
                         if inv_item['id'] == item_id:
                             inv_item['stock'] -= item['quantity']
                             if inv_item['stock'] <= 0:
                                 inv_item['available'] = False
                             break
-                    # Update sales data
                     sale_found = False
                     for sale in restaurants[st.session_state.active_restaurant]['sales_data']:
                         if sale['item_id'] == item_id:
@@ -476,7 +460,6 @@ elif st.session_state.active_view == 'student':
                             'quantity': item['quantity'],
                             'revenue': item['quantity'] * item['price']
                         })
-                    # Update metrics
                     metrics['today_sales'] += item['quantity'] * item['price'] / 1000
                     metrics['items_sold'] += item['quantity']
                     low_stock_threshold = 5
