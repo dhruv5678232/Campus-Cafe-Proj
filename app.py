@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-# Mock data with updated 'rise' inventory
+# Mock data with updated 'rise' and 'embers' inventory
 restaurants = {
     'rise': {
         'name': 'Rise - Ready to Serve',
@@ -150,18 +150,19 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# Header Metrics with updated currency format
+# Header Metrics with updated currency format (only for Admin View)
 current_restaurant = restaurants.get(st.session_state.active_restaurant, {})
 metrics = current_restaurant.get('metrics', {'today_sales': 0, 'gross_cost': 0, 'gross_profit': 0, 'net_profit': 0, 'items_sold': 0, 'low_stock_items': 0})
-st.title(current_restaurant.get('name', 'Restaurant Dashboard'))
-col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Today's Sales", f"₹{int(metrics['today_sales'] * 1000):,}")
-col2.metric("Gross Cost", f"₹{int(metrics['gross_cost'] * 1000):,}")
-col3.metric("Gross Profit", f"₹{int(metrics['gross_profit'] * 1000):,}")
-col4.metric("Net Profit", f"₹{int(metrics['net_profit'] * 1000):,}")
-col5.metric("Items Sold", f"{metrics['items_sold']:,}")
-col6, col7 = st.columns([3, 2])
-col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}")
+if st.session_state.active_view == 'admin':
+    st.title(current_restaurant.get('name', 'Restaurant Dashboard'))
+    col1, col2, col3, col4, col5 = st.columns(5)
+    col1.metric("Today's Sales", f"₹{int(metrics['today_sales'] * 1000):,}")
+    col2.metric("Gross Cost", f"₹{int(metrics['gross_cost'] * 1000):,}")
+    col3.metric("Gross Profit", f"₹{int(metrics['gross_profit'] * 1000):,}")
+    col4.metric("Net Profit", f"₹{int(metrics['net_profit'] * 1000):,}")
+    col5.metric("Items Sold", f"{metrics['items_sold']:,}")
+    col6, col7 = st.columns([3, 2])
+    col6.metric("Low Stock Items", f"{metrics['low_stock_items']:,}")
 
 # Main Content
 if st.session_state.active_view == 'admin':
@@ -178,9 +179,17 @@ if st.session_state.active_view == 'admin':
             df_inv_original['max_stock'] = pd.to_numeric(df_inv_original['max_stock'], errors='coerce')
             df_inv_original['stock_pct'] = (df_inv_original['stock'] / df_inv_original['max_stock'] * 100).round(1)
             for _, row in df_inv_original.iterrows():
-                st.metric(label=row['name'], value=f"{int(row['stock'])}/{int(row['max_stock'])}")
-                st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'} | Price: ₹{row['price']}")
-                st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
+                col1, col2 = st.columns([4, 1])
+                with col1:
+                    st.metric(label=row['name'], value=f"{int(row['stock'])}/{int(row['max_stock'])}")
+                    st.caption(f"Category: {row['category']} | Available: {'Yes' if row['available'] else 'No'} | Price: ₹{row['price']}")
+                    st.toggle("Availability", value=row['available'], key=f"toggle_{row['id']}")
+                with col2:
+                    if st.button("+", key=f"stock_add_{row['id']}"):
+                        for item in restaurants[st.session_state.active_restaurant]['inventory']:
+                            if item['id'] == row['id']:
+                                item['stock'] += 1
+                                st.rerun()
         else:
             st.warning("No inventory data available.")
     
@@ -265,7 +274,7 @@ if st.session_state.active_view == 'admin':
         st.info("No suggestions available.")
 
 elif st.session_state.active_view == 'student':
-    # Student Dashboard
+    # Student Dashboard (no stats or title metrics)
     tab1, tab2, tab3, tab4 = st.tabs(["Top Items", "Rate an Item", "Suggest New Item", "Order Now"])
     
     with tab1:
@@ -425,8 +434,53 @@ elif st.session_state.active_view == 'student':
                         st.session_state.cart[row['id']]['quantity'] += 1
                         st.rerun()
         
-        # Cart Summary
+        # Cart Summary with Minus Button
         if st.session_state.cart:
             total_items = sum(item['quantity'] for item in st.session_state.cart.values())
             total_price = sum(item['quantity'] * item['price'] for item in st.session_state.cart.values())
-            st.button(f"Cart: {total_items} Items ₹{total_price:.2f}")
+            col1, col2 = st.columns([4, 1])
+            with col1:
+                st.button(f"Cart: {total_items} Items ₹{total_price:.2f}")
+            with col2:
+                if st.button("-", key="remove_from_cart"):
+                    for item_id in list(st.session_state.cart.keys()):
+                        if st.session_state.cart[item_id]['quantity'] > 0:
+                            st.session_state.cart[item_id]['quantity'] -= 1
+                            if st.session_state.cart[item_id]['quantity'] == 0:
+                                del st.session_state.cart[item_id]
+                            st.rerun()
+                            break
+        
+        # Order Confirmation
+        if st.session_state.cart and st.button("Confirm Order", type="primary"):
+            for item_id, item in st.session_state.cart.items():
+                if item['quantity'] > 0:
+                    # Update inventory stock
+                    for inv_item in restaurants[st.session_state.active_restaurant]['inventory']:
+                        if inv_item['id'] == item_id:
+                            inv_item['stock'] -= item['quantity']
+                            if inv_item['stock'] <= 0:
+                                inv_item['available'] = False
+                            break
+                    # Update sales data
+                    sale_found = False
+                    for sale in restaurants[st.session_state.active_restaurant]['sales_data']:
+                        if sale['item_id'] == item_id:
+                            sale['quantity'] += item['quantity']
+                            sale['revenue'] += item['quantity'] * item['price']
+                            sale_found = True
+                            break
+                    if not sale_found and item['price'] != 0.0:
+                        restaurants[st.session_state.active_restaurant]['sales_data'].append({
+                            'item_id': item_id,
+                            'quantity': item['quantity'],
+                            'revenue': item['quantity'] * item['price']
+                        })
+                    # Update metrics
+                    metrics['today_sales'] += item['quantity'] * item['price'] / 1000
+                    metrics['items_sold'] += item['quantity']
+                    low_stock_threshold = 5
+                    metrics['low_stock_items'] = sum(1 for i in restaurants[st.session_state.active_restaurant]['inventory'] if i['stock'] <= low_stock_threshold and i['available'])
+            st.session_state.cart = {}
+            st.success("Order confirmed! Thank you for your purchase.")
+            st.rerun()
