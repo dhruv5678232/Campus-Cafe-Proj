@@ -446,7 +446,7 @@ elif st.session_state.active_view == 'student':
                             st.rerun()
                             break
         
-        # Order Confirmation
+        # Order Confirmation with fixed key handling
         if st.session_state.cart and st.button("Confirm Order", type="primary"):
             for item_id, item in st.session_state.cart.items():
                 if item['quantity'] > 0:
@@ -458,7 +458,9 @@ elif st.session_state.active_view == 'student':
                             break
                     sale_found = False
                     for sale in restaurants[st.session_state.active_restaurant]['sales_data']:
-                        if sale['item_id'] == item_id:
+                        # Check both 'item_id' and 'id' to handle inconsistency
+                        sale_id = sale.get('item_id', sale.get('id'))
+                        if sale_id == item_id:
                             sale['quantity'] += item['quantity']
                             sale['revenue'] += item['quantity'] * item['price']
                             sale_found = True
